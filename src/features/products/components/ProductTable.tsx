@@ -52,7 +52,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
 
   return (
     <div className="w-full bg-[#FEFEFE] dark:bg-[#1B2129] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-xs font-roboto">
-      <div className="overflow-x-auto">
+      <div className="w-full overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-[#F0F2F7] dark:bg-[#151A21] border-b border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider font-poppins">

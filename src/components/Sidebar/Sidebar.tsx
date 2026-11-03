@@ -44,7 +44,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`h-full min-h-screen bg-[#FEFEFE] dark:bg-[#1B2129] border-r border-gray-200 dark:border-gray-800 flex flex-col transition-all duration-200 font-roboto ${
+      id="app-sidebar"
+      className={`h-dvh bg-[#FEFEFE] dark:bg-[#1B2129] border-r border-gray-200 dark:border-gray-800 flex flex-col font-roboto ${
         collapsed ? 'w-20' : 'w-64'
       } ${className}`}
       aria-label={t('menuLabel')}

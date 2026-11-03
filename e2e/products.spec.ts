@@ -136,6 +136,41 @@ test.describe('Fluxo Completo de Gerenciamento de Produtos', () => {
     ).toBeVisible();
   });
 
+  test('abre e fecha a Sidebar móvel pelo botão, overlay e navegação', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/pt-br/produtos');
+
+    const menuToggle = page.getByRole('button', { name: 'Abrir menu' });
+    await expect(menuToggle).toBeVisible();
+    await expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await menuToggle.click();
+    await expect(
+      page.getByRole('button', { name: 'Fechar menu', exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Fechar menu', exact: true })
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    await page.getByRole('button', { name: 'Dashboard', exact: true }).click();
+    await expect(page).toHaveURL(/pt-br\/dashboard/);
+    await expect(page.getByRole('button', { name: 'Abrir menu' })).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+    await page
+      .getByRole('button', { name: 'Fechar menu e conteúdo' })
+      .click();
+    await expect(page.getByRole('button', { name: 'Abrir menu' })).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
   test('executa fluxo completo: criar, pesquisar, editar e remover produto', async ({
     page,
   }) => {

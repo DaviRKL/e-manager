@@ -62,7 +62,7 @@ export function DashboardContent() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <article className={cardClassName}>
             <h2 className={headingClassName}>{t('lowStockTitle')}</h2>
             <div className="mt-4">

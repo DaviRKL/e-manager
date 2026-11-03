@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Moon, User } from 'lucide-react';
+import { Menu, Moon, Sun, User, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 
@@ -10,6 +10,8 @@ export interface HeaderProps {
   subtitle?: string;
   userName?: string;
   userRole?: string;
+  isMobileMenuOpen?: boolean;
+  onToggleMobileMenu?: () => void;
   className?: string;
 }
 
@@ -20,6 +22,8 @@ export const Header: React.FC<HeaderProps> = ({
   subtitle,
   userName,
   userRole,
+  isMobileMenuOpen = false,
+  onToggleMobileMenu,
   className = '',
 }) => {
   const t = useTranslations('header');
@@ -27,11 +31,26 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`h-16 w-full bg-[#FEFEFE] dark:bg-[#1B2129] border-b border-gray-200 dark:border-gray-800 px-6 flex items-center justify-between transition-colors duration-200 font-roboto ${className}`}
+      className={`h-16 w-full gap-3 bg-[#FEFEFE] px-4 dark:bg-[#1B2129] border-b border-gray-200 dark:border-gray-800 sm:px-6 flex items-center justify-between transition-colors duration-200 font-roboto ${className}`}
     >
+      <button
+        type="button"
+        onClick={onToggleMobileMenu}
+        aria-label={isMobileMenuOpen ? t('closeMenu') : t('openMenu')}
+        aria-expanded={isMobileMenuOpen}
+        aria-controls="app-sidebar"
+        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#1B2129] transition-colors hover:bg-[#F0F2F7] focus:outline-none focus:ring-2 focus:ring-[#6085FF] dark:text-[#F9F9FA] dark:hover:bg-[#151A21] md:hidden"
+      >
+        {isMobileMenuOpen ? (
+          <X aria-hidden="true" className="h-5 w-5" />
+        ) : (
+          <Menu aria-hidden="true" className="h-5 w-5" />
+        )}
+      </button>
+
       {/* Title / Breadcrumb */}
-      <div>
-        <h1 className="font-poppins font-bold text-lg text-[#1B2129] dark:text-[#F9F9FA]">
+      <div className="min-w-0 flex-1">
+        <h1 className="truncate font-poppins font-bold text-lg text-[#1B2129] dark:text-[#F9F9FA]">
           {title ?? t('defaultTitle')}
         </h1>
         {subtitle && (
@@ -40,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-3">
+      <div className="flex shrink-0 items-center gap-1 sm:gap-3">
         {/* Theme Toggle Button */}
         <button
           type="button"
