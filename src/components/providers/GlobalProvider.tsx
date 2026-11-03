@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
 import { useAppSelector } from '@/store/hooks';
+import { QueryProvider } from './QueryProvider';
 
 interface GlobalProviderProps {
   children: React.ReactNode;
@@ -27,7 +28,9 @@ function ThemeEffect({ children }: { children: React.ReactNode }) {
 export function GlobalProvider({ children }: GlobalProviderProps) {
   return (
     <Provider store={store}>
-      <ThemeEffect>{children}</ThemeEffect>
+      <QueryProvider>
+        <ThemeEffect>{children}</ThemeEffect>
+      </QueryProvider>
     </Provider>
   );
 }
