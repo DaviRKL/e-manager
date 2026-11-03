@@ -24,6 +24,12 @@
     "close": "Fechar modal",
     "loading": "Carregando..."
   },
+  "pagination": {
+    "navigationLabel": "Paginação de produtos",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "pageIndicator": "Página {current} de {total}"
+  },
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Visão geral do catálogo e do estoque",

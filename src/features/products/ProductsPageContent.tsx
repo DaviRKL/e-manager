@@ -5,6 +5,7 @@ import { Search, Plus, RefreshCw, AlertCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
+import { Pagination } from '@/components/Pagination';
 import { AppLayout } from '@/components/layout';
 import { useProducts } from '@/hooks/useProducts';
 import {
@@ -14,6 +15,8 @@ import {
 } from './components';
 import type { Product } from '@/types/product';
 import type { ProductFormData } from './schemas/productSchema';
+
+const ITEMS_PER_PAGE = 10;
 
 export const ProductsPageContent: React.FC = () => {
   const t = useTranslations('productsPage');
@@ -33,6 +36,7 @@ export const ProductsPageContent: React.FC = () => {
 
   // Search filter state
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Modals state
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -51,6 +55,14 @@ export const ProductsPageContent: React.FC = () => {
         String(product.id).toLowerCase().includes(term)
     );
   }, [products, searchTerm]);
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const activePage = Math.min(currentPage, Math.max(totalPages, 1));
+  const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
+  const paginatedProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   // Modal actions
   const handleOpenCreate = () => {
@@ -94,7 +106,10 @@ export const ProductsPageContent: React.FC = () => {
               type="search"
               placeholder={t('searchPlaceholder')}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
               leftIcon={<Search className="w-4 h-4" />}
               aria-label={t('searchLabel')}
             />
@@ -164,10 +179,15 @@ export const ProductsPageContent: React.FC = () => {
           </div>
 
           <ProductTable
-            products={filteredProducts}
+            products={paginatedProducts}
             onEdit={handleOpenEdit}
             onDelete={handleOpenDelete}
             isLoading={isLoading}
+          />
+          <Pagination
+            currentPage={activePage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
           />
         </div>
 

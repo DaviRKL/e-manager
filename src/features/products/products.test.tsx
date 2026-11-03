@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import {
   render as rtlRender,
   screen,
@@ -6,13 +6,24 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
+import React from 'react';
 import messages from '../../../messages/pt-br.json';
 import { getProductSchema } from './schemas/productSchema';
 import { ProductTable } from './components/ProductTable';
 import { ProductFormModal } from './components/ProductFormModal';
 import { DeleteConfirmModal } from './components/DeleteConfirmModal';
+import { ProductsPageContent } from './ProductsPageContent';
+import { useProducts } from '@/hooks/useProducts';
 import { formatCurrencyBRL } from '@/utils/formatters';
 import type { Product } from '@/types/product';
+
+vi.mock('@/components/layout', () => ({
+  AppLayout: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+vi.mock('@/hooks/useProducts', () => ({
+  useProducts: vi.fn(),
+}));
 
 function render(ui: React.ReactElement) {
   return rtlRender(
@@ -23,6 +34,76 @@ function render(ui: React.ReactElement) {
 }
 
 describe('Product Feature Tests', () => {
+  describe('Products pagination', () => {
+    const products: Product[] = Array.from({ length: 25 }, (_, index) => ({
+      id: index + 1,
+      name: `Product ${String(index + 1).padStart(2, '0')}`,
+      price: 10 + index,
+      quantity: 5,
+      category: 'Test',
+      created_at: '',
+    }));
+
+    beforeEach(() => {
+      vi.mocked(useProducts).mockReturnValue({
+        products,
+        isLoading: false,
+        isFetching: false,
+        isError: false,
+        error: null,
+        getProducts: vi.fn(),
+        createProduct: vi.fn(),
+        updateProduct: vi.fn(),
+        deleteProduct: vi.fn(),
+        isCreating: false,
+        isUpdating: false,
+        isDeleting: false,
+        createError: null,
+        updateError: null,
+        deleteError: null,
+        createMutation: {} as ReturnType<typeof useProducts>['createMutation'],
+        updateMutation: {} as ReturnType<typeof useProducts>['updateMutation'],
+        deleteMutation: {} as ReturnType<typeof useProducts>['deleteMutation'],
+      });
+    });
+
+    it('shows ten products per page and advances to the next page', () => {
+      render(<ProductsPageContent />);
+
+      expect(screen.getAllByRole('row')).toHaveLength(11);
+      expect(screen.getByText('Product 01')).toBeInTheDocument();
+      expect(screen.getByText('Product 10')).toBeInTheDocument();
+      expect(screen.queryByText('Product 11')).not.toBeInTheDocument();
+      expect(screen.getByText('Página 1 de 3')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Anterior' })).toBeDisabled();
+
+      fireEvent.click(screen.getByRole('button', { name: 'Próximo' }));
+
+      expect(screen.getAllByRole('row')).toHaveLength(11);
+      expect(screen.queryByText('Product 01')).not.toBeInTheDocument();
+      expect(screen.getByText('Product 11')).toBeInTheDocument();
+      expect(screen.getByText('Product 20')).toBeInTheDocument();
+      expect(screen.getByText('Página 2 de 3')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Anterior' })).toBeEnabled();
+    });
+
+    it('resets to the first page when the search term changes', () => {
+      render(<ProductsPageContent />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'Próximo' }));
+      expect(screen.getByText('Página 2 de 3')).toBeInTheDocument();
+
+      fireEvent.change(
+        screen.getByRole('searchbox', { name: 'Barra de pesquisa de produtos' }),
+        { target: { value: 'Product 02' } }
+      );
+
+      expect(screen.getByText('Página 1 de 1')).toBeInTheDocument();
+      expect(screen.getByText('Product 02')).toBeInTheDocument();
+      expect(screen.queryByText('Product 12')).not.toBeInTheDocument();
+    });
+  });
+
   describe('Zod productSchema Validation', () => {
     const productSchema = getProductSchema((key) => key);
 

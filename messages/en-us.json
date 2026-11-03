@@ -24,6 +24,12 @@
     "close": "Close dialog",
     "loading": "Loading..."
   },
+  "pagination": {
+    "navigationLabel": "Product pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "pageIndicator": "Page {current} of {total}"
+  },
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Catalog and inventory overview",
