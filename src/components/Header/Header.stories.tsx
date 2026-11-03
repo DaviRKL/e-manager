@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { NextIntlClientProvider } from 'next-intl';
+import messages from '../../../messages/pt-br.json';
 import { Header } from './Header';
 
 const meta: Meta<typeof Header> = {
@@ -7,7 +8,7 @@ const meta: Meta<typeof Header> = {
   component: Header,
   decorators: [
     (Story) => (
-      <NextIntlClientProvider locale="pt-br" messages={{}}>
+      <NextIntlClientProvider locale="pt-br" messages={messages}>
         <Story />
       </NextIntlClientProvider>
     ),

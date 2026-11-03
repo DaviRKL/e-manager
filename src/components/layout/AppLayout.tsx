@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -15,9 +16,10 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({
   children,
-  title = 'Produtos',
-  subtitle = 'Gerenciamento de catálogo e estoque',
+  title,
+  subtitle,
 }) => {
+  const t = useTranslations('header');
   const pathname = usePathname();
   const router = useRouter();
   const theme = useAppSelector((state) => state.ui.theme);
@@ -46,8 +48,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
       {/* Main Body */}
       <div className="flex-1 flex flex-col min-w-0">
         <Header
-          title={title}
-          subtitle={subtitle}
+          title={title ?? t('defaultTitle')}
+          subtitle={subtitle ?? t('defaultSubtitle')}
           theme={theme}
           onToggleTheme={() => dispatch(toggleTheme())}
         />

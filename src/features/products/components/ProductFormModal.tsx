@@ -3,10 +3,14 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { productSchema, type ProductFormData } from '../schemas/productSchema';
+import {
+  getProductSchema,
+  type ProductFormData,
+} from '../schemas/productSchema';
 import type { Product } from '@/types/product';
 
 export interface ProductFormModalProps {
@@ -24,6 +28,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   onSubmit,
   isSubmitting = false,
 }) => {
+  const t = useTranslations('productForm');
+  const schema = getProductSchema(t);
   const isEditing = !!initialData;
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -32,7 +38,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(schema),
     values: initialData
       ? {
           name: initialData.name,
@@ -62,7 +68,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
       const message =
         err instanceof Error
           ? err.message
-          : 'Ocorreu um erro ao salvar o produto.';
+          : t('saveError');
       setServerError(message);
     }
   };
@@ -71,11 +77,11 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title={isEditing ? 'Editar Produto' : 'Cadastrar Novo Produto'}
+      title={isEditing ? t('editTitle') : t('createTitle')}
       description={
         isEditing
-          ? 'Atualize as informações do produto. Todos os campos são obrigatórios para substituição completa.'
-          : 'Preencha os campos abaixo para cadastrar um novo produto no estoque.'
+          ? t('editDescription')
+          : t('createDescription')
       }
       maxWidth="md"
     >
@@ -91,8 +97,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
         {/* Nome */}
         <Input
-          label="Nome do Produto"
-          placeholder="Ex: Teclado Mecânico RGB"
+          label={t('nameLabel')}
+          placeholder={t('namePlaceholder')}
           error={errors.name?.message}
           disabled={isSubmitting}
           {...register('name')}
@@ -101,10 +107,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Preço */}
           <Input
-            label="Preço (R$)"
+            label={t('priceLabel')}
             type="number"
             step="0.01"
-            placeholder="0.00"
+            placeholder={t('pricePlaceholder')}
             error={errors.price?.message}
             disabled={isSubmitting}
             {...register('price', { valueAsNumber: true })}
@@ -112,10 +118,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
           {/* Quantidade */}
           <Input
-            label="Quantidade em Estoque"
+            label={t('quantityLabel')}
             type="number"
             step="1"
-            placeholder="1"
+            placeholder={t('quantityPlaceholder')}
             error={errors.quantity?.message}
             disabled={isSubmitting}
             {...register('quantity', { valueAsNumber: true })}
@@ -124,8 +130,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
         {/* Categoria */}
         <Input
-          label="Categoria"
-          placeholder="Ex: Periféricos, Hardware, Monitores..."
+          label={t('categoryLabel')}
+          placeholder={t('categoryPlaceholder')}
           error={errors.category?.message}
           disabled={isSubmitting}
           {...register('category')}
@@ -139,11 +145,11 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             onClick={handleClose}
             disabled={isSubmitting}
           >
-            Cancelar
+            {t('cancel')}
           </Button>
 
           <Button type="submit" variant="primary" isLoading={isSubmitting}>
-            {isEditing ? 'Atualizar Produto' : 'Salvar Produto'}
+            {isEditing ? t('update') : t('save')}
           </Button>
         </div>
       </form>

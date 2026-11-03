@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Pencil, Trash2, PackageOpen } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { formatCurrencyBRL } from '@/utils/formatters';
 import type { Product } from '@/types/product';
 
@@ -18,6 +19,8 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   onDelete,
   isLoading = false,
 }) => {
+  const t = useTranslations('productTable');
+
   if (isLoading) {
     return (
       <div className="w-full bg-[#FEFEFE] dark:bg-[#1B2129] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-xs">
@@ -38,10 +41,10 @@ export const ProductTable: React.FC<ProductTableProps> = ({
           <PackageOpen className="w-8 h-8" />
         </div>
         <h3 className="font-poppins font-bold text-base text-[#1B2129] dark:text-[#F9F9FA]">
-          Nenhum produto encontrado
+          {t('emptyTitle')}
         </h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm mx-auto">
-          Não localizamos registros com os critérios informados ou nenhum produto foi cadastrado ainda.
+          {t('emptyDescription')}
         </p>
       </div>
     );
@@ -54,22 +57,22 @@ export const ProductTable: React.FC<ProductTableProps> = ({
           <thead>
             <tr className="bg-[#F0F2F7] dark:bg-[#151A21] border-b border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider font-poppins">
               <th scope="col" className="px-6 py-3.5">
-                ID
+                {t('id')}
               </th>
               <th scope="col" className="px-6 py-3.5">
-                Nome
+                {t('name')}
               </th>
               <th scope="col" className="px-6 py-3.5">
-                Categoria
+                {t('category')}
               </th>
               <th scope="col" className="px-6 py-3.5 text-right">
-                Preço
+                {t('price')}
               </th>
               <th scope="col" className="px-6 py-3.5 text-center">
-                Quantidade
+                {t('quantity')}
               </th>
               <th scope="col" className="px-6 py-3.5 text-center">
-                Ações
+                {t('actions')}
               </th>
             </tr>
           </thead>
@@ -110,7 +113,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                         : 'bg-[#218F4E]/10 text-[#218F4E]'
                     }`}
                   >
-                    {product.quantity} un
+                    {product.quantity} {t('quantityUnit')}
                   </span>
                 </td>
 
@@ -121,9 +124,9 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     <button
                       type="button"
                       onClick={() => onEdit(product)}
-                      aria-label={`Editar ${product.name}`}
+                      aria-label={t('editProduct', { name: product.name })}
                       className="p-1.5 rounded-lg text-gray-500 hover:text-[#3E63AC] dark:text-gray-400 dark:hover:text-[#6085FF] hover:bg-[#F0F2F7] dark:hover:bg-gray-800 transition-colors cursor-pointer"
-                      title="Editar"
+                      title={t('editProduct', { name: product.name })}
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
@@ -132,9 +135,9 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     <button
                       type="button"
                       onClick={() => onDelete(product)}
-                      aria-label={`Remover ${product.name}`}
+                      aria-label={t('removeProduct', { name: product.name })}
                       className="p-1.5 rounded-lg text-gray-500 hover:text-[#CC2E30] dark:text-gray-400 dark:hover:text-[#CC2E30] hover:bg-[#CC2E30]/10 transition-colors cursor-pointer"
-                      title="Remover"
+                      title={t('removeProduct', { name: product.name })}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

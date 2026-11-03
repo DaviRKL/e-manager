@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ export const Modal: React.FC<ModalProps> = ({
   maxWidth = 'md',
   showCloseButton = true,
 }) => {
+  const t = useTranslations('common');
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -85,7 +88,7 @@ export const Modal: React.FC<ModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Fechar modal"
+                aria-label={t('close')}
                 className="p-1.5 rounded-lg text-gray-400 hover:text-[#1B2129] dark:hover:text-[#F9F9FA] hover:bg-[#F0F2F7] dark:hover:bg-[#151A21] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />

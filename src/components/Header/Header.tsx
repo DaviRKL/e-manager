@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sun, Moon, User } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 
 export interface HeaderProps {
@@ -15,12 +16,13 @@ export interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   theme = 'light',
   onToggleTheme,
-  title = 'Visão Geral',
+  title,
   subtitle,
-  userName = 'Administrador',
-  userRole = 'Gestor',
+  userName,
+  userRole,
   className = '',
 }) => {
+  const t = useTranslations('header');
   const isDark = theme === 'dark';
 
   return (
@@ -30,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Title / Breadcrumb */}
       <div>
         <h1 className="font-poppins font-bold text-lg text-[#1B2129] dark:text-[#F9F9FA]">
-          {title}
+          {title ?? t('defaultTitle')}
         </h1>
         {subtitle && (
           <p className="text-xs text-gray-500 dark:text-gray-400">{subtitle}</p>
@@ -44,10 +46,10 @@ export const Header: React.FC<HeaderProps> = ({
           type="button"
           onClick={onToggleTheme}
           aria-label={
-            isDark ? 'Alternar para tema claro' : 'Alternar para tema escuro'
+            isDark ? t('themeToLight') : t('themeToDark')
           }
           className="p-2 rounded-lg text-[#1B2129] dark:text-[#F9F9FA] hover:bg-[#F0F2F7] dark:hover:bg-[#151A21] transition-colors focus:outline-none focus:ring-2 focus:ring-[#6085FF] cursor-pointer"
-          title={isDark ? 'Modo Claro' : 'Modo Escuro'}
+          title={isDark ? t('lightMode') : t('darkMode')}
         >
           {isDark ? (
             <Sun className="w-5 h-5 text-amber-400" />
@@ -67,10 +69,10 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div className="hidden sm:block text-left">
             <p className="text-xs font-bold font-poppins text-[#1B2129] dark:text-[#F9F9FA] leading-tight">
-              {userName}
+              {userName ?? t('defaultUserName')}
             </p>
             <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
-              {userRole}
+              {userRole ?? t('defaultUserRole')}
             </p>
           </div>
         </div>

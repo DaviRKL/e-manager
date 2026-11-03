@@ -111,6 +111,31 @@ test.describe('Fluxo Completo de Gerenciamento de Produtos', () => {
     });
   });
 
+  test('troca o idioma e atualiza os textos da página e do formulário', async ({
+    page,
+  }) => {
+    await page.goto('/pt-br/produtos');
+    await page.getByRole('combobox', { name: 'Idioma' }).selectOption('en-us');
+
+    await expect(page).toHaveURL(/en-us\/produtos/);
+    await expect(
+      page.getByRole('heading', { name: 'Products', exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('searchbox', { name: 'Search products' })
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'New product' }).click();
+
+    const formModal = page.getByRole('dialog');
+    await expect(
+      formModal.getByRole('heading', { name: 'Add new product' })
+    ).toBeVisible();
+    await formModal.getByRole('button', { name: 'Save product' }).click();
+    await expect(
+      formModal.getByText('Product name is required.')
+    ).toBeVisible();
+  });
+
   test('executa fluxo completo: criar, pesquisar, editar e remover produto', async ({
     page,
   }) => {

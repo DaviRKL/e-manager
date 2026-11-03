@@ -1,11 +1,12 @@
 'use client';
 
 import { ChevronDown } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/routing';
 
 export function LanguageSwitcher() {
   const locale = useLocale();
+  const t = useTranslations('header');
   const pathname = usePathname();
   const router = useRouter();
 
@@ -18,7 +19,7 @@ export function LanguageSwitcher() {
   return (
     <div className="relative">
       <label htmlFor="language-switcher" className="sr-only">
-        {locale === 'pt-br' ? 'Idioma' : 'Language'}
+        {t('language')}
       </label>
       <select
         id="language-switcher"

@@ -1,9 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { NextIntlClientProvider } from 'next-intl';
+import messages from '../../../messages/pt-br.json';
 import { Sidebar } from './Sidebar';
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Design System/Sidebar',
   component: Sidebar,
+  decorators: [
+    (Story) => (
+      <NextIntlClientProvider locale="pt-br" messages={messages}>
+        <Story />
+      </NextIntlClientProvider>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },

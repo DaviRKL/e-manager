@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
+import messages from '../../messages/pt-br.json';
 import { Button } from './Button';
 import { Input } from './Input';
 import { Sidebar } from './Sidebar';
@@ -36,7 +37,11 @@ describe('Design System Components', () => {
 
   it('renders Sidebar with links for Dashboard and Produtos', () => {
     const handleNavigate = vi.fn();
-    render(<Sidebar activeHref="/produtos" onNavigate={handleNavigate} />);
+    render(
+      <NextIntlClientProvider locale="pt-br" messages={messages}>
+        <Sidebar activeHref="/produtos" onNavigate={handleNavigate} />
+      </NextIntlClientProvider>
+    );
 
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
     const produtosBtn = screen.getByText('Produtos');
@@ -49,7 +54,7 @@ describe('Design System Components', () => {
   it('renders Header with theme toggle', () => {
     const handleToggle = vi.fn();
     render(
-      <NextIntlClientProvider locale="pt-br" messages={{}}>
+      <NextIntlClientProvider locale="pt-br" messages={messages}>
         <Header theme="light" onToggleTheme={handleToggle} />
       </NextIntlClientProvider>
     );
@@ -64,7 +69,7 @@ describe('Design System Components', () => {
 
   it('switches locale while preserving the current pathname', () => {
     render(
-      <NextIntlClientProvider locale="pt-br" messages={{}}>
+      <NextIntlClientProvider locale="pt-br" messages={messages}>
         <Header />
       </NextIntlClientProvider>
     );

@@ -1,6 +1,112 @@
 {
-  "HomePage": {
+  "metadata": {
     "title": "e-manager",
     "description": "Enterprise Management System"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "menuLabel": "Sidebar navigation",
+    "systemStatus": "System operational"
+  },
+  "header": {
+    "defaultTitle": "Overview",
+    "defaultSubtitle": "Catalog and inventory management",
+    "themeToLight": "Switch to light theme",
+    "themeToDark": "Switch to dark theme",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "language": "Language",
+    "defaultUserName": "Administrator",
+    "defaultUserRole": "Manager"
+  },
+  "common": {
+    "close": "Close dialog",
+    "loading": "Loading..."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Catalog and inventory overview",
+    "loadError": "Could not load products: {message}",
+    "lowStockTitle": "Low-stock products",
+    "thresholdLabel": "Set low-stock threshold",
+    "loadingProducts": "Loading products...",
+    "stockUnavailable": "Inventory data is unavailable.",
+    "noLowStockProducts": "There are no low-stock products.",
+    "mostExpensiveTitle": "Most expensive products",
+    "pricesUnavailable": "Pricing data is unavailable.",
+    "noProducts": "No products have been added.",
+    "totalProductsTitle": "Products",
+    "totalProductsUnavailable": "Product total is unavailable.",
+    "requestFailed": "Request failed",
+    "productsAdded": "Products added",
+    "quantityUnit": "units"
+  },
+  "productsPage": {
+    "title": "Products",
+    "subtitle": "Real-time inventory and catalog management",
+    "searchPlaceholder": "Search by name, category, or ID...",
+    "searchLabel": "Search products",
+    "refreshTitle": "Refresh list",
+    "refreshLabel": "Refresh products",
+    "newProduct": "New product",
+    "requestFailed": "Request failed",
+    "backendError": "Could not connect to the backend: {message}. Make sure the backend is running at {url}.",
+    "tryAgain": "Try again",
+    "results": "{count, plural, one {Showing # product} other {Showing # products}}{query}",
+    "matching": " matching \"{term}\""
+  },
+  "productTable": {
+    "id": "ID",
+    "name": "Name",
+    "category": "Category",
+    "price": "Price",
+    "quantity": "Quantity",
+    "actions": "Actions",
+    "emptyTitle": "No products found",
+    "emptyDescription": "No products match your criteria, or no products have been added yet.",
+    "quantityUnit": "units",
+    "editProduct": "Edit {name}",
+    "removeProduct": "Remove {name}"
+  },
+  "productForm": {
+    "createTitle": "Add new product",
+    "editTitle": "Edit product",
+    "createDescription": "Fill in the fields below to add a product to your inventory.",
+    "editDescription": "Update the product information. All fields are required for a complete replacement.",
+    "nameLabel": "Product name",
+    "namePlaceholder": "e.g. RGB Mechanical Keyboard",
+    "priceLabel": "Price (BRL)",
+    "pricePlaceholder": "0.00",
+    "quantityLabel": "Inventory quantity",
+    "quantityPlaceholder": "1",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "e.g. Peripherals, Hardware, Monitors...",
+    "save": "Save product",
+    "update": "Update product",
+    "cancel": "Cancel",
+    "saveError": "An error occurred while saving the product.",
+    "validation": {
+      "nameRequired": "Product name is required.",
+      "nameMin": "The name must be at least 3 characters long.",
+      "priceRequired": "Enter a valid price.",
+      "pricePositive": "Price must be a positive number.",
+      "quantityRequired": "Enter a valid quantity.",
+      "quantityInteger": "Quantity must be a whole number.",
+      "quantityPositive": "Quantity must be a positive number.",
+      "categoryRequired": "Category is required."
+    }
+  },
+  "deleteProduct": {
+    "title": "Confirm deletion",
+    "confirmation": "Are you sure you want to remove this product?",
+    "id": "ID:",
+    "name": "Name:",
+    "permanent": "This action is permanent and cannot be undone.",
+    "yes": "Yes",
+    "no": "No",
+    "serverError": "Internal server error (500): The product could not be removed right now. Please try again later.",
+    "statusError": "Error {status} while removing the product.",
+    "unexpectedError": "An unexpected error occurred while removing the product."
   }
 }

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { AlertTriangle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import type { Product } from '@/types/product';
@@ -22,6 +23,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
   onConfirm,
   isDeleting = false,
 }) => {
+  const t = useTranslations('deleteProduct');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (!product) return null;
@@ -41,17 +43,17 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
         const status = error.response?.status;
         if (status === 500) {
           setErrorMessage(
-            'Erro interno no servidor (500): Não foi possível remover o produto no momento. Tente novamente mais tarde.'
+            t('serverError')
           );
           return;
         }
         setErrorMessage(
           error.response?.data?.message ||
-            `Erro ${status || ''} ao tentar remover o produto.`
+            t('statusError', { status: status ?? '' })
         );
         return;
       }
-      setErrorMessage('Ocorreu um erro inesperado ao remover o produto.');
+      setErrorMessage(t('unexpectedError'));
     }
   };
 
@@ -59,7 +61,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Confirmar Exclusão"
+      title={t('title')}
       maxWidth="sm"
     >
       <div className="space-y-4 font-roboto">
@@ -69,24 +71,24 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
           </div>
           <div>
             <p className="text-sm font-medium text-[#1B2129] dark:text-[#F9F9FA]">
-              Você tem certeza que deseja remover esse produto?
+              {t('confirmation')}
             </p>
             <div className="mt-2 p-2.5 rounded-lg bg-[#F0F2F7] dark:bg-[#151A21] border border-gray-200 dark:border-gray-800 text-xs space-y-0.5">
               <p>
                 <span className="font-semibold text-gray-500 dark:text-gray-400">
-                  ID:
+                  {t('id')}
                 </span>{' '}
                 {product.id}
               </p>
               <p>
                 <span className="font-semibold text-gray-500 dark:text-gray-400">
-                  Nome:
+                  {t('name')}
                 </span>{' '}
                 {product.name}
               </p>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              Esta ação é permanente e não poderá ser desfeita.
+              {t('permanent')}
             </p>
           </div>
         </div>
@@ -109,7 +111,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             onClick={handleClose}
             disabled={isDeleting}
           >
-            Não
+            {t('no')}
           </Button>
 
           <Button
@@ -118,7 +120,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             onClick={handleConfirm}
             isLoading={isDeleting}
           >
-            Sim
+            {t('yes')}
           </Button>
         </div>
       </div>

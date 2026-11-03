@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { AlertCircle, Boxes } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AppLayout } from '@/components/layout';
 import { useProducts } from '@/hooks/useProducts';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -9,6 +10,7 @@ import { setLowStockThreshold } from '@/store/slices/dashboardSlice';
 import { formatCurrencyBRL } from '@/utils/formatters';
 
 export function DashboardContent() {
+  const t = useTranslations('dashboard');
   const { products, isLoading, isError, error } = useProducts();
   const dispatch = useAppDispatch();
   const lowStockThreshold = useAppSelector(
@@ -41,8 +43,8 @@ export function DashboardContent() {
 
   return (
     <AppLayout
-      title="Dashboard"
-      subtitle="Visão geral do catálogo e do estoque"
+      title={t('title')}
+      subtitle={t('subtitle')}
     >
       <div className="mx-auto max-w-7xl space-y-6">
         {isError && (
@@ -52,27 +54,27 @@ export function DashboardContent() {
           >
             <AlertCircle aria-hidden="true" className="h-5 w-5 shrink-0" />
             <span>
-              Erro ao carregar produtos:{' '}
-              {error instanceof Error
-                ? error.message
-                : 'Falha na requisição'}
+              {t('loadError', {
+                message:
+                  error instanceof Error ? error.message : t('requestFailed'),
+              })}
             </span>
           </div>
         )}
 
         <div className="grid grid-cols-1 items-stretch gap-5 lg:grid-cols-3">
           <article className={cardClassName}>
-            <h2 className={headingClassName}>Produtos com estoque baixo</h2>
+            <h2 className={headingClassName}>{t('lowStockTitle')}</h2>
             <div className="mt-4">
               <label
                 htmlFor="low-stock-threshold"
                 className="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-300"
               >
-                Definir limite de estoque baixo
+                {t('thresholdLabel')}
               </label>
               <input
                 id="low-stock-threshold"
-                aria-label="Definir limite de estoque baixo"
+                aria-label={t('thresholdLabel')}
                 type="number"
                 min="0"
                 step="1"
@@ -89,8 +91,8 @@ export function DashboardContent() {
                 className="mt-4 text-sm text-gray-500 dark:text-gray-400"
               >
                 {isLoading
-                  ? 'Carregando produtos...'
-                  : 'Dados de estoque indisponíveis.'}
+                  ? t('loadingProducts')
+                  : t('stockUnavailable')}
               </p>
             ) : lowStockProducts.length > 0 ? (
               <ul className="mt-4 space-y-3">
@@ -100,27 +102,29 @@ export function DashboardContent() {
                     className="flex items-center justify-between gap-4 text-sm font-medium text-[#CC2E30]"
                   >
                     <span className="min-w-0 truncate">{product.name}</span>
-                    <span className="shrink-0">{product.quantity} un</span>
+                    <span className="shrink-0">
+                      {product.quantity} {t('quantityUnit')}
+                    </span>
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                Nenhum produto está com estoque baixo.
+                {t('noLowStockProducts')}
               </p>
             )}
           </article>
 
           <article className={cardClassName}>
-            <h2 className={headingClassName}>Produtos mais caros</h2>
+            <h2 className={headingClassName}>{t('mostExpensiveTitle')}</h2>
             {isLoading || isError ? (
               <p
                 role="status"
                 className="mt-4 text-sm text-gray-500 dark:text-gray-400"
               >
                 {isLoading
-                  ? 'Carregando produtos...'
-                  : 'Dados de preços indisponíveis.'}
+                  ? t('loadingProducts')
+                  : t('pricesUnavailable')}
               </p>
             ) : mostExpensiveProducts.length > 0 ? (
               <ul className="mt-4 space-y-3">
@@ -138,7 +142,7 @@ export function DashboardContent() {
               </ul>
             ) : (
               <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                Nenhum produto cadastrado.
+                {t('noProducts')}
               </p>
             )}
           </article>
@@ -150,15 +154,15 @@ export function DashboardContent() {
               aria-hidden="true"
               className="mb-3 h-8 w-8 text-[#3E63AC] dark:text-[#6085FF]"
             />
-            <h2 className={headingClassName}>Produtos</h2>
+            <h2 className={headingClassName}>{t('totalProductsTitle')}</h2>
             {isLoading || isError ? (
               <p
                 role="status"
                 className="mt-3 text-sm text-gray-500 dark:text-gray-400"
               >
                 {isLoading
-                  ? 'Carregando produtos...'
-                  : 'Total de produtos indisponível.'}
+                  ? t('loadingProducts')
+                  : t('totalProductsUnavailable')}
               </p>
             ) : (
               <>
@@ -166,7 +170,7 @@ export function DashboardContent() {
                   {products.length}
                 </p>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  Produtos adicionados
+                  {t('productsAdded')}
                 </p>
               </>
             )}

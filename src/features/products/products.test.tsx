@@ -1,14 +1,31 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { productSchema } from './schemas/productSchema';
+import {
+  render as rtlRender,
+  screen,
+  fireEvent,
+  waitFor,
+} from '@testing-library/react';
+import { NextIntlClientProvider } from 'next-intl';
+import messages from '../../../messages/pt-br.json';
+import { getProductSchema } from './schemas/productSchema';
 import { ProductTable } from './components/ProductTable';
 import { ProductFormModal } from './components/ProductFormModal';
 import { DeleteConfirmModal } from './components/DeleteConfirmModal';
 import { formatCurrencyBRL } from '@/utils/formatters';
 import type { Product } from '@/types/product';
 
+function render(ui: React.ReactElement) {
+  return rtlRender(
+    <NextIntlClientProvider locale="pt-br" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>
+  );
+}
+
 describe('Product Feature Tests', () => {
   describe('Zod productSchema Validation', () => {
+    const productSchema = getProductSchema((key) => key);
+
     it('accepts valid product form data', () => {
       const valid = {
         name: 'Notebook Dell Inspiron',
@@ -34,7 +51,7 @@ describe('Product Feature Tests', () => {
       const result = productSchema.safeParse(invalid);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain('mínimo 3 caracteres');
+        expect(result.error.issues[0].message).toBe('validation.nameMin');
       }
     });
 

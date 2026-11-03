@@ -1,7 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render as rtlRender,
+  screen,
+  within,
+} from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import { NextIntlClientProvider } from 'next-intl';
+import messages from '../../../messages/pt-br.json';
 import dashboardReducer from '@/store/slices/dashboardSlice';
 import uiReducer from '@/store/slices/uiSlice';
 import { useProducts } from '@/hooks/useProducts';
@@ -109,9 +116,11 @@ function renderDashboard() {
     },
   });
 
-  render(
+  rtlRender(
     <Provider store={store}>
-      <DashboardContent />
+      <NextIntlClientProvider locale="pt-br" messages={messages}>
+        <DashboardContent />
+      </NextIntlClientProvider>
     </Provider>
   );
 
@@ -177,13 +186,15 @@ describe('DashboardContent', () => {
 
   it('shows loading and error feedback while products are unavailable', () => {
     mockProducts({ isLoading: true });
-    const { unmount } = render(
+    const { unmount } = rtlRender(
       <Provider
         store={configureStore({
           reducer: { dashboard: dashboardReducer, ui: uiReducer },
         })}
       >
-        <DashboardContent />
+        <NextIntlClientProvider locale="pt-br" messages={messages}>
+          <DashboardContent />
+        </NextIntlClientProvider>
       </Provider>
     );
     expect(screen.getAllByText('Carregando produtos...')).toHaveLength(3);

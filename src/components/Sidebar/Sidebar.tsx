@@ -1,9 +1,11 @@
 import React from 'react';
+import Image from 'next/image';
 import { LayoutDashboard, Package, LucideIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export interface SidebarItem {
   id: string;
-  label: string;
+  label: 'dashboard' | 'products';
   href: string;
   icon?: LucideIcon | React.ComponentType<{ className?: string }>;
 }
@@ -19,13 +21,13 @@ export interface SidebarProps {
 const DEFAULT_ITEMS: SidebarItem[] = [
   {
     id: 'dashboard',
-    label: 'Dashboard',
+    label: 'dashboard',
     href: '/dashboard',
     icon: LayoutDashboard,
   },
   {
     id: 'produtos',
-    label: 'Produtos',
+    label: 'products',
     href: '/produtos',
     icon: Package,
   },
@@ -38,23 +40,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
   collapsed = false,
   className = '',
 }) => {
+  const t = useTranslations('navigation');
+
   return (
     <aside
       className={`h-full min-h-screen bg-[#FEFEFE] dark:bg-[#1B2129] border-r border-gray-200 dark:border-gray-800 flex flex-col transition-all duration-200 font-roboto ${
         collapsed ? 'w-20' : 'w-64'
       } ${className}`}
-      aria-label="Menu lateral de navegação"
+      aria-label={t('menuLabel')}
     >
       {/* Brand Header */}
-      <div className="h-16 flex items-center px-6 border-b border-gray-100 dark:border-gray-800/80 gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#3E63AC] flex items-center justify-center text-[#F9F9FA] font-poppins font-bold text-lg shadow-sm shrink-0">
-          e
+      <div className="h-16 flex items-center px-6 border-b border-gray-100 dark:border-gray-800/80">
+        <div
+          className={`relative shrink-0 ${
+            collapsed ? 'h-8 w-8 overflow-hidden' : 'h-[38px] w-[180px]'
+          }`}
+        >
+          <Image
+            src="/e-manager-logo.svg"
+            alt="e-manager"
+            width={180}
+            height={38}
+            priority
+            className="max-w-none brightness-0 dark:invert"
+          />
         </div>
-        {!collapsed && (
-          <span className="font-poppins font-bold text-lg text-[#1B2129] dark:text-[#F9F9FA] tracking-tight">
-            e-manager
-          </span>
-        )}
       </div>
 
       {/* Navigation */}
@@ -84,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }`}
                 />
               )}
-              {!collapsed && <span>{item.label}</span>}
+              {!collapsed && <span>{t(item.label)}</span>}
             </button>
           );
         })}
@@ -95,13 +105,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {!collapsed ? (
           <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#218F4E] inline-block" />
-            <span>Sistema Operacional</span>
+            <span>{t('systemStatus')}</span>
           </div>
         ) : (
           <div className="flex justify-center">
             <span
               className="w-2 h-2 rounded-full bg-[#218F4E] inline-block"
-              title="Sistema Operacional"
+              title={t('systemStatus')}
             />
           </div>
         )}

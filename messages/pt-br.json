@@ -1,6 +1,112 @@
 {
-  "HomePage": {
+  "metadata": {
     "title": "e-manager",
     "description": "Sistema de Gestão Empresarial"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "products": "Produtos",
+    "menuLabel": "Menu lateral de navegação",
+    "systemStatus": "Sistema operacional"
+  },
+  "header": {
+    "defaultTitle": "Visão geral",
+    "defaultSubtitle": "Gerenciamento de catálogo e estoque",
+    "themeToLight": "Alternar para tema claro",
+    "themeToDark": "Alternar para tema escuro",
+    "lightMode": "Modo claro",
+    "darkMode": "Modo escuro",
+    "language": "Idioma",
+    "defaultUserName": "Administrador",
+    "defaultUserRole": "Gestor"
+  },
+  "common": {
+    "close": "Fechar modal",
+    "loading": "Carregando..."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Visão geral do catálogo e do estoque",
+    "loadError": "Erro ao carregar produtos: {message}",
+    "lowStockTitle": "Produtos com estoque baixo",
+    "thresholdLabel": "Definir limite de estoque baixo",
+    "loadingProducts": "Carregando produtos...",
+    "stockUnavailable": "Dados de estoque indisponíveis.",
+    "noLowStockProducts": "Nenhum produto está com estoque baixo.",
+    "mostExpensiveTitle": "Produtos mais caros",
+    "pricesUnavailable": "Dados de preços indisponíveis.",
+    "noProducts": "Nenhum produto cadastrado.",
+    "totalProductsTitle": "Produtos",
+    "totalProductsUnavailable": "Total de produtos indisponível.",
+    "requestFailed": "Falha na requisição",
+    "productsAdded": "Produtos adicionados",
+    "quantityUnit": "un"
+  },
+  "productsPage": {
+    "title": "Produtos",
+    "subtitle": "Gerenciamento de estoque e catálogo em tempo real",
+    "searchPlaceholder": "Pesquisar por nome, categoria ou ID...",
+    "searchLabel": "Barra de pesquisa de produtos",
+    "refreshTitle": "Recarregar lista",
+    "refreshLabel": "Recarregar produtos",
+    "newProduct": "Novo produto",
+    "requestFailed": "Falha na requisição",
+    "backendError": "Erro ao conectar ao backend: {message}. Verifique se o backend está ativo em {url}.",
+    "tryAgain": "Tentar novamente",
+    "results": "{count, plural, one {Exibindo # produto} other {Exibindo # produtos}}{query}",
+    "matching": " para \"{term}\""
+  },
+  "productTable": {
+    "id": "ID",
+    "name": "Nome",
+    "category": "Categoria",
+    "price": "Preço",
+    "quantity": "Quantidade",
+    "actions": "Ações",
+    "emptyTitle": "Nenhum produto encontrado",
+    "emptyDescription": "Não localizamos registros com os critérios informados ou nenhum produto foi cadastrado ainda.",
+    "quantityUnit": "un",
+    "editProduct": "Editar {name}",
+    "removeProduct": "Remover {name}"
+  },
+  "productForm": {
+    "createTitle": "Cadastrar novo produto",
+    "editTitle": "Editar produto",
+    "createDescription": "Preencha os campos abaixo para cadastrar um novo produto no estoque.",
+    "editDescription": "Atualize as informações do produto. Todos os campos são obrigatórios para substituição completa.",
+    "nameLabel": "Nome do produto",
+    "namePlaceholder": "Ex.: Teclado Mecânico RGB",
+    "priceLabel": "Preço (R$)",
+    "pricePlaceholder": "0,00",
+    "quantityLabel": "Quantidade em estoque",
+    "quantityPlaceholder": "1",
+    "categoryLabel": "Categoria",
+    "categoryPlaceholder": "Ex.: Periféricos, Hardware, Monitores...",
+    "save": "Salvar produto",
+    "update": "Atualizar produto",
+    "cancel": "Cancelar",
+    "saveError": "Ocorreu um erro ao salvar o produto.",
+    "validation": {
+      "nameRequired": "O nome do produto é obrigatório.",
+      "nameMin": "O nome deve ter no mínimo 3 caracteres.",
+      "priceRequired": "Informe um preço válido.",
+      "pricePositive": "O preço deve ser um número positivo.",
+      "quantityRequired": "Informe uma quantidade válida.",
+      "quantityInteger": "A quantidade deve ser um número inteiro.",
+      "quantityPositive": "A quantidade deve ser um número positivo.",
+      "categoryRequired": "A categoria é obrigatória."
+    }
+  },
+  "deleteProduct": {
+    "title": "Confirmar exclusão",
+    "confirmation": "Você tem certeza que deseja remover esse produto?",
+    "id": "ID:",
+    "name": "Nome:",
+    "permanent": "Esta ação é permanente e não poderá ser desfeita.",
+    "yes": "Sim",
+    "no": "Não",
+    "serverError": "Erro interno no servidor (500): Não foi possível remover o produto no momento. Tente novamente mais tarde.",
+    "statusError": "Erro {status} ao tentar remover o produto.",
+    "unexpectedError": "Ocorreu um erro inesperado ao remover o produto."
   }
 }

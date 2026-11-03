@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Search, Plus, RefreshCw, AlertCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { AppLayout } from '@/components/layout';
@@ -15,6 +16,7 @@ import type { Product } from '@/types/product';
 import type { ProductFormData } from './schemas/productSchema';
 
 export const ProductsPageContent: React.FC = () => {
+  const t = useTranslations('productsPage');
   const {
     products,
     isLoading,
@@ -80,8 +82,8 @@ export const ProductsPageContent: React.FC = () => {
 
   return (
     <AppLayout
-      title="Produtos"
-      subtitle="Gerenciamento de estoque e catálogo em tempo real"
+      title={t('title')}
+      subtitle={t('subtitle')}
     >
       <div className="space-y-6 max-w-7xl mx-auto">
         {/* Controls Bar: Search & Action Button */}
@@ -90,11 +92,11 @@ export const ProductsPageContent: React.FC = () => {
           <div className="w-full sm:max-w-md">
             <Input
               type="search"
-              placeholder="Pesquisar por nome, categoria ou ID..."
+              placeholder={t('searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               leftIcon={<Search className="w-4 h-4" />}
-              aria-label="Barra de pesquisa de produtos"
+              aria-label={t('searchLabel')}
             />
           </div>
 
@@ -104,8 +106,8 @@ export const ProductsPageContent: React.FC = () => {
               variant="outline"
               size="md"
               onClick={() => getProducts()}
-              title="Recarregar lista"
-              aria-label="Recarregar produtos"
+              title={t('refreshTitle')}
+              aria-label={t('refreshLabel')}
             >
               <RefreshCw className="w-4 h-4" />
             </Button>
@@ -116,7 +118,7 @@ export const ProductsPageContent: React.FC = () => {
               onClick={handleOpenCreate}
               leftIcon={<Plus className="w-4 h-4" />}
             >
-              Novo Produto
+              {t('newProduct')}
             </Button>
           </div>
         </div>
@@ -130,9 +132,11 @@ export const ProductsPageContent: React.FC = () => {
             <div className="flex items-center gap-2">
               <AlertCircle className="w-5 h-5 shrink-0" />
               <span>
-                Erro ao conectar ao backend:{' '}
-                {error instanceof Error ? error.message : 'Falha na requisição'}.
-                Verifique se o backend está ativo em http://localhost:8000.
+                {t('backendError', {
+                  message:
+                    error instanceof Error ? error.message : t('requestFailed'),
+                  url: 'http://localhost:8000',
+                })}
               </span>
             </div>
             <Button
@@ -141,7 +145,7 @@ export const ProductsPageContent: React.FC = () => {
               onClick={() => getProducts()}
               className="text-[#CC2E30] border-[#CC2E30]"
             >
-              Tentar Novamente
+              {t('tryAgain')}
             </Button>
           </div>
         )}
@@ -150,9 +154,12 @@ export const ProductsPageContent: React.FC = () => {
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1 text-xs text-gray-500 dark:text-gray-400 font-medium">
             <span>
-              Exibindo {filteredProducts.length}{' '}
-              {filteredProducts.length === 1 ? 'produto' : 'produtos'}
-              {searchTerm && ` para "${searchTerm}"`}
+              {t('results', {
+                count: filteredProducts.length,
+                query: searchTerm
+                  ? t('matching', { term: searchTerm })
+                  : '',
+              })}
             </span>
           </div>
 

@@ -1,10 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { NextIntlClientProvider } from 'next-intl';
+import messages from '../../../messages/pt-br.json';
 import { Modal } from './Modal';
 import { Button } from '../Button';
 
 const meta: Meta<typeof Modal> = {
   title: 'Design System/Modal',
   component: Modal,
+  decorators: [
+    (Story) => (
+      <NextIntlClientProvider locale="pt-br" messages={messages}>
+        <Story />
+      </NextIntlClientProvider>
+    ),
+  ],
   parameters: {
     layout: 'centered',
   },
