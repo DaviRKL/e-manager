@@ -1,11 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { NextIntlClientProvider } from 'next-intl';
 import { Header } from './Header';
 
 const meta: Meta<typeof Header> = {
   title: 'Design System/Header',
   component: Header,
+  decorators: [
+    (Story) => (
+      <NextIntlClientProvider locale="pt-br" messages={{}}>
+        <Story />
+      </NextIntlClientProvider>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/dashboard',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

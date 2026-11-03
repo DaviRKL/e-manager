@@ -1,5 +1,6 @@
 import React from 'react';
-import { Sun, Moon, Bell, User } from 'lucide-react';
+import { Sun, Moon, User } from 'lucide-react';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 
 export interface HeaderProps {
   theme?: 'light' | 'dark';
@@ -55,14 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </button>
 
-        {/* Notifications placeholder */}
-        <button
-          type="button"
-          aria-label="Notificações"
-          className="p-2 rounded-lg text-gray-500 hover:text-[#1B2129] dark:text-gray-400 dark:hover:text-[#F9F9FA] hover:bg-[#F0F2F7] dark:hover:bg-[#151A21] transition-colors focus:outline-none focus:ring-2 focus:ring-[#6085FF] cursor-pointer"
-        >
-          <Bell className="w-5 h-5" />
-        </button>
+        <LanguageSwitcher />
 
         <div className="h-6 w-px bg-gray-200 dark:border-gray-700" />
 

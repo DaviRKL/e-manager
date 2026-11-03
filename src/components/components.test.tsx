@@ -1,9 +1,17 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { NextIntlClientProvider } from 'next-intl';
 import { Button } from './Button';
 import { Input } from './Input';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+
+const { replace } = vi.hoisted(() => ({ replace: vi.fn() }));
+
+vi.mock('@/i18n/routing', () => ({
+  usePathname: () => '/dashboard',
+  useRouter: () => ({ replace }),
+}));
 
 describe('Design System Components', () => {
   it('renders Button variants and fires onClick', () => {
@@ -40,7 +48,11 @@ describe('Design System Components', () => {
 
   it('renders Header with theme toggle', () => {
     const handleToggle = vi.fn();
-    render(<Header theme="light" onToggleTheme={handleToggle} />);
+    render(
+      <NextIntlClientProvider locale="pt-br" messages={{}}>
+        <Header theme="light" onToggleTheme={handleToggle} />
+      </NextIntlClientProvider>
+    );
 
     const toggleBtn = screen.getByRole('button', {
       name: /alternar para tema escuro/i,
@@ -48,5 +60,20 @@ describe('Design System Components', () => {
     expect(toggleBtn).toBeInTheDocument();
     fireEvent.click(toggleBtn);
     expect(handleToggle).toHaveBeenCalledTimes(1);
+  });
+
+  it('switches locale while preserving the current pathname', () => {
+    render(
+      <NextIntlClientProvider locale="pt-br" messages={{}}>
+        <Header />
+      </NextIntlClientProvider>
+    );
+
+    const languageSwitcher = screen.getByRole('combobox', { name: 'Idioma' });
+    expect(languageSwitcher).toHaveValue('pt-br');
+    fireEvent.change(languageSwitcher, { target: { value: 'en-us' } });
+
+    expect(replace).toHaveBeenCalledWith('/dashboard', { locale: 'en-us' });
+    expect(screen.queryByRole('button', { name: 'Notificações' })).toBeNull();
   });
 });
