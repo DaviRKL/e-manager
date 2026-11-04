@@ -10,7 +10,7 @@ Um painel de gestão de estoque moderno, responsivo e internacionalizado. Desenv
 
 - **Live Demo (Vercel):** [https://e-manager-tau.vercel.app](https://e-manager-tau.vercel.app)
 - **Protótipo (Figma):** [Acessar Design no Figma](https://www.figma.com/design/qyEDryZVxs1ehgiFFFnSkp/Desafio-003---React-Developer---Code-Challenges?node-id=4401-176&t=GOPMFpdndT3wbU8N-0)
-- **Backend Fork (Repositório):** [FRONT-CHALLENGE-e-manager-backend](https://github.com/code-challenges-org/FRONT-CHALLENGE-e-manager-backend.git)
+- **Backend Fork (Repositório):** [FRONT-CHALLENGE-e-manager-backend](https://github.com/DaviRKL/FRONT-CHALLENGE-e-manager-backend)
 
 ---
 
