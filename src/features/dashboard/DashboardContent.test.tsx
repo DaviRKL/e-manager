@@ -164,7 +164,7 @@ describe('DashboardContent', () => {
     expect(within(stockCard!).queryByText('Produto A')).not.toBeInTheDocument();
   });
 
-  it('shows the five most expensive products in descending price order', () => {
+  it('shows all products ordered by descending price', () => {
     renderDashboard();
 
     const productsCard = screen
@@ -181,7 +181,74 @@ describe('DashboardContent', () => {
       expect.stringContaining('Produto D'),
       expect.stringContaining('Produto G'),
       expect.stringContaining('Produto E'),
+      expect.stringContaining('Produto C'),
+      expect.stringContaining('Produto A'),
     ]);
+  });
+
+  it('paginates both lists by ten and resets the low-stock page on threshold change', () => {
+    const paginatedProducts: Product[] = Array.from(
+      { length: 23 },
+      (_, index) => ({
+        id: index + 1,
+        name: `Produto ${String(index + 1).padStart(2, '0')}`,
+        price: index + 1,
+        quantity: 5,
+        category: 'Geral',
+        created_at: '',
+      })
+    );
+    mockProducts({ products: paginatedProducts });
+    renderDashboard();
+
+    const stockCard = screen
+      .getByRole('heading', { name: 'Produtos com estoque baixo' })
+      .closest('article');
+    const expensiveCard = screen
+      .getByRole('heading', { name: 'Produtos mais caros' })
+      .closest('article');
+    expect(stockCard).not.toBeNull();
+    expect(expensiveCard).not.toBeNull();
+
+    const stockCardQueries = within(stockCard!);
+    const expensiveCardQueries = within(expensiveCard!);
+    expect(stockCardQueries.getAllByRole('listitem')).toHaveLength(10);
+    expect(expensiveCardQueries.getAllByRole('listitem')).toHaveLength(10);
+    expect(stockCardQueries.getByText('Página 1 de 3')).toBeInTheDocument();
+
+    fireEvent.click(
+      within(
+        stockCardQueries.getByRole('navigation', {
+          name: 'Paginação de produtos',
+        })
+      ).getByRole('button', { name: 'Próximo' })
+    );
+    fireEvent.click(
+      within(
+        expensiveCardQueries.getByRole('navigation', {
+          name: 'Paginação de produtos',
+        })
+      ).getByRole('button', { name: 'Próximo' })
+    );
+
+    expect(stockCardQueries.getAllByRole('listitem')).toHaveLength(10);
+    expect(stockCardQueries.getByText('Produto 11')).toBeInTheDocument();
+    expect(stockCardQueries.queryByText('Produto 01')).not.toBeInTheDocument();
+    expect(expensiveCardQueries.getAllByRole('listitem')).toHaveLength(10);
+    expect(expensiveCardQueries.getByText('Produto 13')).toBeInTheDocument();
+    expect(
+      expensiveCardQueries.queryByText('Produto 23')
+    ).not.toBeInTheDocument();
+
+    fireEvent.change(
+      stockCardQueries.getByLabelText('Definir limite de estoque baixo'),
+      { target: { value: '5' } }
+    );
+
+    expect(stockCardQueries.getByText('Página 1 de 3')).toBeInTheDocument();
+    expect(stockCardQueries.getByText('Produto 01')).toBeInTheDocument();
+    expect(stockCardQueries.queryByText('Produto 11')).not.toBeInTheDocument();
+    expect(expensiveCardQueries.getByText('Página 2 de 3')).toBeInTheDocument();
   });
 
   it('shows loading and error feedback while products are unavailable', () => {
